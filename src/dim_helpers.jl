@@ -78,6 +78,9 @@ end
     return x
 end
 
+# Special case for absent bias
+@inline insert_singleton_spatial_dimension(b::Bool, reps::Int=0) = b
+
 """
     predilated_size(x_size::Tuple, dilation::Tuple)
 
