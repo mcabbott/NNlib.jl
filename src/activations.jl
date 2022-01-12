@@ -712,7 +712,7 @@ end
 
 # These approximations are very badly behaved for Float16; none are fast.
 # They are also a bit slower with ForwardDiff.Dual numbers, let's use Base:
-tanh_fast(x::Real) = Base.tanh(x)
+tanh_fast(x::Number) = Base.tanh(x)
 
 """
     sigmoid_fast(x)
@@ -742,6 +742,7 @@ end
 # but that polynomial has poor relative accuracy for negative x.
 
 sigmoid_fast(x::Float16) = sigmoid(x)  # sigmoid_fast is extremely badly behaved at large x
+sigmoid_fast(x::Number) = sigmoid(x)
 
 """
     NNlib.fast_act(f, [x::AbstractArray])
