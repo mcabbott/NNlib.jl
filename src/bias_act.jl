@@ -1,6 +1,4 @@
 
-export dense_bias_act, bias_act!
-
 """
     dense_bias_act(σ, w, x, b)
     dense_bias_act(σ, w, x, w′, x′, b)
@@ -29,10 +27,12 @@ Unlike `mul!`, it has a gradient rule.
 muladd!(A, B, C) = mul!(C, A, B, true, true)
 
 function ChainRulesCore.rrule(::typeof(muladd!), A, B, C)
+    proj_A = ProjectTo(A)
+    proj_B = ProjectTo(B)
     proj_C = ProjectTo(C)
     function muladd!_back(dZ0)
         dZ = unthunk(dZ0)
-        (NoTangent(), ProjectTo(A)(@thunk dZ * B'), ProjectTo(B)(@thunk A' * dZ), proj_C(dZ))
+        (NoTangent(), (@thunk proj_A(dZ * B')), (@thunk proj_B(A' * dZ)), @thunk proj_C(dZ))
     end
     return muladd!(A, B, C), muladd!_back
 end

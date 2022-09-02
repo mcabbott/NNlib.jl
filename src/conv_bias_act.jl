@@ -61,6 +61,8 @@ function rrule(::typeof(conv_bias_act!), y, x, w, cdims, b::B, σ::F; kw...) whe
     Ω = conv_bias_act!(y, x, w, cdims, b, σ; kw...)
     if eltype(B) != Bool
         b_dims = ntuple(d -> size(b, d)==1 ? d : ndims(x)+1, ndims(x))
+        proj_x = ProjectTo(x)
+        proj_w = ProjectTo(w)
         proj_b = ProjectTo(b)
     end
     function conv_bias_act!_pullback(Δ_raw)
@@ -79,8 +81,8 @@ function rrule(::typeof(conv_bias_act!), y, x, w, cdims, b::B, σ::F; kw...) whe
         return (
             NoTangent(), # func
             NoTangent(), # y
-            @thunk(ProjectTo(x)(∇conv_data(Δ, w, cdims; kw...))),
-            @thunk(ProjectTo(w)(∇conv_filter(x, Δ, cdims; kw...))),
+            @thunk(proj_x(∇conv_data(Δ, w, cdims; kw...))),
+            @thunk(proj_w(∇conv_filter(x, Δ, cdims; kw...))),
             NoTangent(), # cdims
             Δb,
             NoTangent(), # σ

@@ -73,6 +73,15 @@ DepthwiseConvDims
 DenseConvDims
 ```
 
+## Fused
+
+```@docs
+dense_bias_act
+bias_act!
+conv_bias_act
+conv_bias_act!
+```
+
 ## Upsampling
 
 `Flux`'s `Upsample` layer uses `NNlib.upsample_nearest`, `NNlib.upsample_bilinear`, and `NNlib.upsample_trilinear` as its backend. Additionally, `Flux`'s `PixelShuffle` layer uses `NNlib.pixel_shuffle` as its backend.

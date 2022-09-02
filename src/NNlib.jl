@@ -61,9 +61,11 @@ export conv, conv!, ∇conv_data, ∇conv_data!, ∇conv_filter,
     ∇depthwiseconv_data, ∇depthwiseconv_data!, 
     ∇depthwiseconv_filter, ∇depthwiseconv_filter!
 
-include("bias_act.jl")
 include("conv_bias_act.jl")
 export conv_bias_act, conv_bias_act!
+
+include("bias_act.jl")
+export dense_bias_act, bias_act!
 
 include("ctc.jl")
 export ctc_loss
