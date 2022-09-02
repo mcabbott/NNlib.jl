@@ -3,7 +3,7 @@ module NNlib
 using Pkg
 using Requires
 using ChainRulesCore
-import ChainRulesCore: rrule
+import ChainRulesCore: rrule, derivatives_given_output
 using Base.Broadcast: broadcasted
 using Base.Threads
 using Statistics
@@ -45,6 +45,9 @@ export softmax, softmax!, ∇softmax, ∇softmax!, logsoftmax,
     logsoftmax!, ∇logsoftmax, ∇logsoftmax!, logsumexp
 
 include("batched/batchedadjtrans.jl")
+
+include("softmax.jl")
+
 include("batched/batchedmul.jl")
 export batched_mul, batched_mul!, ⊠,  batched_vec,
     batched_transpose, batched_adjoint
@@ -58,6 +61,7 @@ export conv, conv!, ∇conv_data, ∇conv_data!, ∇conv_filter,
     ∇depthwiseconv_data, ∇depthwiseconv_data!, 
     ∇depthwiseconv_filter, ∇depthwiseconv_filter!
 
+include("bias_act.jl")
 include("conv_bias_act.jl")
 export conv_bias_act, conv_bias_act!
 
@@ -96,6 +100,7 @@ include("impl/depthwiseconv_im2col.jl")
 
 # Direct implementations of pooling
 include("impl/pooling_direct.jl")
+
 include("deprecations.jl")
 
 end # module NNlib

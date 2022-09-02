@@ -836,14 +836,14 @@ this replacement for some array or element types.
 ## broadcasted rrule activation functions.
 
 ## This is a performance hack specifically for Zygote, because it doesn't handle fused
-## broadcasts well; but it generally should be good (or at least harmless) for any AD, as
+## broadcasts well; but it generally should be good (or at least harmless) for any AD, as 
 ## it saves ADing the broadcasting machinery.
 ## Related Issue https://github.com/JuliaDiff/ChainRulesCore.jl/issues/271
 
-## TODO: add to the lists below all activations.
-
-UNARY_ACTS = [ # f, dfdx
-    ## In the same order as above!
+UNARY_ACTS = [ # f, df
+    (:relu,         :(Ω > 0)),  # Testing Ω>0 not x>0 makes `derivatives_given_output` more useful
+    (:hardtanh,     :(-1 < Ω < 1)),
+    (:selu,         :(deriv_selu(Ω))),
     (:σ,            :(conj(Ω * (1 - Ω)))),
     (:hardσ,        :(ifelse((Ω>0)&(Ω<1), oftf(Ω, 1/6), oftf(Ω, 1)))),
     (:logσ,         :(sigmoid_fast(-x))),
